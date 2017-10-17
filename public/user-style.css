@@ -1,0 +1,40 @@
+/* Profile */
+#profile-windows{
+	width:80%;
+	margin:30px auto;
+	/*background-color: #ddd;*/
+	height:300px;
+}
+#profile-chat-rooms{
+	width:47%;
+	height:240px;
+	border:1px solid #333;
+	position:relative;
+	/*background-color: #888;*/
+}
+
+#profile-online-friends{
+	width:48%;
+	height:240px;
+	border:1px solid #333;
+	position:relative;
+}
+
+.under-box-banner{
+	position:absolute;
+	bottom:-30px;
+}
+
+/* Rooms page */
+#rooms-content{
+	width:50%;
+	margin:30px auto;
+	/*background-color: #ddd;*/
+}
+
+#new-room-box{
+	position:relative;
+	border:1px solid;
+	height:200px;
+	padding:20px;
+}

@@ -1,0 +1,30 @@
+<% include ../partials/header.ejs %>
+<% include ./user-style.ejs %>
+<% include ../partials/navigation.ejs %>
+
+<div class="container">
+	<div id="rooms-content" class="clear-fix">
+		<div class="left-box">
+			<p>Created rooms: </p>
+			<ul>
+				<li><a href="#">Football fans</a></li>
+				<li><a href="#">New school year</a></li>
+				<li><a href="#">Food lovers</a></li>
+			</ul>
+		</div>
+		<div class="right-box" id="new-room-box">
+			<p>Create a new room</p>
+			<form id="new-room-form" action="/rooms/new" method="post">
+				<div class="form-row">
+					<label for="roomName">Room title:</label>
+					<input type="text" name="roomName" placeholder="Room name">
+				</div>
+				<div class="form-button">
+					<input type="submit" name="submit" value="Create" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer.ejs %>

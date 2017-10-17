@@ -1,0 +1,52 @@
+<% include ./partials/header.ejs %>
+
+<div class="container">
+	
+	<p id="main-banner">Maktup is an online chat application which 
+	allows you to chat with your friends or manage chat rooms.</p>
+
+	<div class="boxes clear-fix"  id="forms-container">
+
+		<div  class="left-box" id="register-box">
+			<h2>Register:</h2>			
+			<form id="register-form" action="/register" method="post">
+				<div class="form-row clear-fix">
+					<label for="email">Email</label>
+					<input type="text" name="email" placeholder="Email" required />
+				</div>
+				<div class="form-row clear-fix">
+					<label for="username">Username</label>
+					<input type="text" name="username" placeholder="Username" required />
+				</div>
+				<div class="form-row clear-fix">
+					<label for="password">Password</label>		
+					<input type="password" name="password" placeholder="Password" required />
+				</div>
+				<div class="form-button">
+					<input type="submit" name="submit" value="Register" />
+				</div>
+			</form>
+		</div>
+
+		<div class="right-box" id="login-box">
+			<h2>Login:</h2>
+			<form id="login-form" action="/login" method="post">
+				<div class="form-row clear-fix">
+					<label for="username">Username</label>
+					<input type="text" name="username" placeholder="Username" required />
+				</div>
+				<div class="form-row clear-fix">
+					<label for="password">Password</label>
+					<input type="password" name="password" placeholder="Password" required />
+				</div>
+				<div class="form-button">
+					<input type="submit" name="submit" value="Login">
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<% include ./partials/footer.ejs %>

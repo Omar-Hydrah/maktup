@@ -1,0 +1,143 @@
+/* General styles */
+body{
+	padding:10px;
+}
+ul{
+	padding:0;
+}
+li{
+	padding:0;
+	list-style:none;
+}
+
+a{
+	text-decoration:none;
+}
+
+a:hover{
+	text-decoration:underline;
+}
+/**{box-sizing:border-box;}*/
+
+.clear-fix::after{content:""; display:block; clear:both;}
+.right-box{float:right;}
+.left-box{float:left;}
+/*.container{width:900px; border:1px solid red;}*/
+
+
+/* Header file */
+#site-brand{
+	font-size:25px;
+	font-weight:400;
+	color:#603d7b;
+}
+
+/* Index page */
+.container{ width:80%; margin:0 auto; }
+#main-banner{ font-size:28px; }
+
+#forms-container input[type=text], #forms-container input[type=password]{
+	font-size:14px;
+	float:right;
+	margin-right:8px;
+	border:1px solid #ccc;
+	border-radius:4px;
+	padding:5px;
+}
+
+#forms-container input[type=text]:focus, #forms-container input[type=password]:focus{
+	border:1px solid #555;
+}
+
+#forms-container label{
+	font-size:18px;
+	float:left;
+	margin-left:15px;
+}
+
+#register-box{	
+	/*background-color: #eee; */
+	width:40%; 
+	height:350px; 
+	position:relative; 
+	padding:10px;  
+	border:1px solid #888;
+}
+
+#login-box{
+	width:40%; 
+	height:350px; 
+	position:relative;
+	padding:10px;
+	border:1px solid #888;}
+
+.form-row{
+	margin-bottom:10%;
+}
+
+/* Register form */
+#register-form{
+	/*position:relative;*/
+}
+
+.form-button{
+	position:absolute;
+	bottom:10%;
+	right:10%;
+}
+
+.form-button input{
+	/*background-color: #ddd;*/
+	color:#333;
+	border:1px solid #ddd;
+	border-radius:4px;
+	text-decoration:none;
+	cursor:pointer;
+	font-size:18px;
+	padding:5px;
+}
+
+/* Navigation */
+nav{
+	border:1px solid #333;
+	width:80%;
+	/*height:50px;*/
+	margin:0 auto;
+	padding:0.2% 2%;
+	/*box-sizing:border-box;*/
+	position:relative;
+}
+
+nav li{
+	display:inline-block;
+	margin-right:10%;
+	font-size:20px;
+}
+nav a{
+	color: #603d7b;
+	position:relative;
+}
+
+nav a::after{
+	transition:all ease-in-out 0.1s;
+	display:block;
+	content:"";
+	width:100%;
+	position:absolute;
+	border:0 solid #603d7b;
+	bottom:-5px;
+	opacity:0;
+}
+
+nav a:hover{
+	/* To override an effect from a general rule */
+	text-decoration:none;
+}
+
+nav a:hover::after{
+	border:1px solid #603d7b;
+	bottom:-7px;
+	opacity:1;
+}
+
+
