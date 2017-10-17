@@ -11,6 +11,7 @@ var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var sharedSession = require("express-socket.io-session");
 
+mongoose.connect("mongodb://maktup_main:123456@ds121575.mlab.com:21575/maktup");
 
 app.set("view engine", "ejs");
 app.use(express.static(path.resolve(__dirname, "public")));
@@ -18,11 +19,25 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cookieParser("happyflappycat"));
 
+var sessionStore = new session.MemoryStore();
+
+var sessionSetup = {
+	secret: "cathappysuper",
+	resave: true,
+	saveUninitialized: true,
+	store: sessionStore
+};
+
+app.use(session(sessionSetup));
+
 /* Login and authentication middlewares */
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+
+/* Passport configuration */
+require("./config/passport-config.js");
 
 /* Express Routers */
 var homeRouter = require("./routes/home-router.js");

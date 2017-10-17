@@ -1,17 +1,23 @@
-var router = require("express").Router();
+var router     = require("express").Router();
+var middleware = require("../middleware/middleware.js");
 
-router.get(/\/|\/home|\/index/, function(req, res){
+var isLoggedIn = middleware.isLoggedIn;
+
+router.get(/^\/$|^\/home$|^\/index$/, isLoggedIn, function(req, res){
 	res.render("user/index");
 });
 
-
-
-router.get("/profile", function(req, res){
+router.get("/profile", isLoggedIn, function(req, res){
 	res.render("user/profile");
 });
 
-router.get("/rooms", function(req, res){
+router.get("/rooms", isLoggedIn, function(req, res){
 	res.render("user/rooms");
+});
+
+router.get("/logout", isLoggedIn, function(req, res){
+	req.logout();
+	res.redirect("/");
 });
 
 

@@ -140,4 +140,6 @@ nav a:hover::after{
 	opacity:1;
 }
 
-
+nav #logout{
+	float:right;
+}
