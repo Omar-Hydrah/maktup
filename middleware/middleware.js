@@ -9,7 +9,9 @@ function isLoggedIn(req, res, next){
 }
 
 function storeToken(req, res, next){
-	var hashToken = kasba.createHash(15);
+	var hashToken = kasba.createRandomHash(15);
+	// console.log(`hash token: ${hashToken}`);
+	// console.log("Stored cookie");
 	req.session.token = hashToken;
 	res.cookie("token", hashToken, {
 		httpOnly:true,
@@ -17,7 +19,7 @@ function storeToken(req, res, next){
 		signed: true
 	});
 
-	return next();
+	next();
 }
 
 module.exports = {

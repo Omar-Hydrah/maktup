@@ -11,7 +11,13 @@ var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var sharedSession = require("express-socket.io-session");
 
-mongoose.connect("mongodb://maktup_main:123456@ds121575.mlab.com:21575/maktup");
+try{
+	// Remote host
+	// mongoose.connect("mongodb://maktup_main:123456@ds121575.mlab.com:21575/maktup");
+	mongoose.connect("mongodb://localhost:27017/maktup");
+}catch(err){
+	throw err;
+}
 
 app.set("view engine", "ejs");
 app.use(express.static(path.resolve(__dirname, "public")));
@@ -42,10 +48,15 @@ require("./config/passport-config.js");
 /* Express Routers */
 var homeRouter = require("./routes/home-router.js");
 var userRouter = require("./routes/user-router.js");
+var roomRouter = require("./routes/room-router.js");
+
+/* Custom middleware */
+var middleware = require("./middleware/middleware.js");
+
 
 app.use("/", homeRouter);
 app.use("/user", userRouter);
-
+app.use("/rooms", middleware.isLoggedIn, roomRouter);
 
 var port = process.env.PORT || 80;
 

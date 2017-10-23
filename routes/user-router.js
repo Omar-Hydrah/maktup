@@ -17,6 +17,7 @@ router.get("/rooms", isLoggedIn, function(req, res){
 
 router.get("/logout", isLoggedIn, function(req, res){
 	req.logout();
+	req.session = null;
 	res.redirect("/");
 });
 
