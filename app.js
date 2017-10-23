@@ -55,7 +55,9 @@ var middleware = require("./middleware/middleware.js");
 
 
 app.use("/", homeRouter);
-app.use("/user", userRouter);
+// Applying a general authentication middleware, 
+// 		to avoid writing it in every single route.
+app.use("/user", middleware.isLoggedIn, userRouter);
 app.use("/rooms", middleware.isLoggedIn, roomRouter);
 
 var port = process.env.PORT || 80;

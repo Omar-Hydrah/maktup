@@ -4,9 +4,17 @@
 <div class="container">
 	<h1>A list of all rooms</h1>
 	<ul>
-		<li><a href="#">Football fans</a></li>
-		<li><a href="#">Legendary heroes</a></li>
-		<li><a href="#">Cairo museums</a></li>
+		<% for(var i = 0; i < rooms.length; i++){ %>
+			<%
+				// For a more readable code.
+				var link  = rooms[i].link;
+				var title = rooms[i].title;
+				var count = rooms[i].membersCount;
+			%>
+			<li>
+				<a href=<%= link %>><%= title %>(<%= count %> members online)</a>
+			</li>
+		<% } %>
 	</ul>
 </div>
 

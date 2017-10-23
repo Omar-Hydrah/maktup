@@ -12,8 +12,7 @@ Controller.saveRoom = function(roomObject, user, done){
 		title  : roomObject.title
 	});
 	room.generateLink(); // Automatically generates a link.
-	
-	console.log(room.save);
+
 	room.save(function(err){
 		if(err){throw err;} // Error
 
@@ -28,6 +27,27 @@ Controller.saveRoom = function(roomObject, user, done){
 
 	// callback(error, roomInstance).
 	return done(null, room);
+}
+
+Controller.getRooms = function(){
+
+	return new Promise(function(resolve, reject){
+		Room.find(function(err, rooms){
+			if(err){reject(err);}
+			resolve(rooms);
+		});	
+	});
+}
+
+Controller.getUserRooms = function(userId){
+	return new Promise(function(resolve, reject){
+
+		Room.find({ownerId: userId}, function(err, rooms){
+			if(err){reject(err);}
+
+			resolve(rooms);
+		});
+	});	
 }
 
 module.exports = Controller;

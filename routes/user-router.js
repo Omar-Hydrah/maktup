@@ -1,21 +1,32 @@
 var router     = require("express").Router();
+// Custom middleware (Authentication)
 var middleware = require("../middleware/middleware.js");
+var RoomController = require("../controllers/room-controller.js");
 
-var isLoggedIn = middleware.isLoggedIn;
 
-router.get(/^\/$|^\/home$|^\/index$/, isLoggedIn, function(req, res){
+router.get(/^\/$|^\/home$|^\/index$/, function(req, res){
 	res.render("user/index");
 });
 
-router.get("/profile", isLoggedIn, function(req, res){
+router.get("/profile", function(req, res){
 	res.render("user/profile");
 });
 
-router.get("/rooms", isLoggedIn, function(req, res){
-	res.render("user/rooms");
+router.get("/rooms", function(req, res){
+
+	var userId = req.session.user.id;
+
+	// Rooms owned by the current user (session).
+	RoomController.getUserRooms(userId)
+	.then(function(rooms){
+		res.render("user/rooms", {rooms: rooms});
+		
+	}).catch(function(err){
+
+	});
 });
 
-router.get("/logout", isLoggedIn, function(req, res){
+router.get("/logout", function(req, res){
 	req.logout();
 	req.session = null;
 	res.redirect("/");

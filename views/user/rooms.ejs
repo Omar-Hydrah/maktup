@@ -7,9 +7,17 @@
 		<div class="left-box">
 			<p>Created rooms: </p>
 			<ul>
-				<li><a href="#">Football fans</a></li>
-				<li><a href="#">New school year</a></li>
-				<li><a href="#">Food lovers</a></li>
+				<% for(var i = 0; i < rooms.length; i++){ %>
+					<%
+						// For a cleaner code
+						var title = rooms[i].title;
+						var link  = rooms[i].link;
+						var count = rooms[i].membersCount;
+					%>
+					<li>
+						<a href=<%= link %>><%= title %>(<%= count %> online)</a>
+					</li>
+				<% } %>
 			</ul>
 		</div>
 		<div class="right-box" id="new-room-box">
