@@ -1,20 +1,47 @@
-/* Profile */
+/* Profile style page */
+
+/*------------*/
+/* index page */
+/*------------*/
+*{
+	/*outline:1px solid red;*/
+	box-sizing:border-box;
+}
+
+
 #profile-windows{
-	width:80%;
+	width:70%;
 	margin:30px auto;
 	/*background-color: #ddd;*/
 	height:300px;
+	position:relative;
 }
-#profile-chat-rooms{
-	width:47%;
+
+#profile-windows .left-box{
+	width:50%;
+	position:relative;
+}
+
+#profile-windows .right-box{
+	width:50%;
+	position:relative;
+}
+
+/* Right */
+#online-chat-rooms{
+	width:90%;
 	height:240px;
 	border:1px solid #333;
 	position:relative;
+	padding:10px;
+	overflow-y:scroll;
 	/*background-color: #888;*/
 }
 
-#profile-online-friends{
-	width:48%;
+/* Left */
+#online-friends{
+	/*float:right;*/
+	width:90%;
 	height:240px;
 	border:1px solid #333;
 	position:relative;
@@ -25,7 +52,13 @@
 	bottom:-30px;
 }
 
+#rooms-list{
+	/*overflow:scroll;*/
+}
+
+/*------------*/
 /* Rooms page */
+/*------------*/
 #rooms-content{
 	width:50%;
 	margin:30px auto;
@@ -37,4 +70,19 @@
 	border:1px solid;
 	height:200px;
 	padding:20px;
+}
+
+/*--------------*/
+/* Profile page */
+/*-------------*/
+#profile-details li{
+	margin-top:5px;
+}
+
+#update-profile-button{
+	margin-top:10px;
+}
+
+#cancel-update-button{
+	margin-left:5px;
 }

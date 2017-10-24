@@ -3,6 +3,9 @@ var User = require("../models/user-model.js");
 
 var Controller = {};
 
+
+// Creates a new Room object, and saves it to database.
+// Takes a callback.
 Controller.saveRoom = function(roomObject, user, done){
 
 	// var room = Room.createRoom(roomObject);
@@ -29,6 +32,7 @@ Controller.saveRoom = function(roomObject, user, done){
 	return done(null, room);
 }
 
+// Retrieves all rooms
 Controller.getRooms = function(){
 
 	return new Promise(function(resolve, reject){
@@ -39,6 +43,18 @@ Controller.getRooms = function(){
 	});
 }
 
+// Retrieves rooms that have online members
+Controller.getOnlineRooms = function(){
+	return new Promise(function(resolve, reject){
+		Room.find({membersCount: {$ne: 0}}, function(err, rooms){
+			if(err){reject(err);}
+			resolve(rooms);
+		});
+	});
+}
+
+// Retrieves all rooms created by a single user.
+// Rooms are displayed under user profile
 Controller.getUserRooms = function(userId){
 	return new Promise(function(resolve, reject){
 

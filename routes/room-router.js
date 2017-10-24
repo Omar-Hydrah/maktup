@@ -1,11 +1,9 @@
 var router     = require("express").Router();
 var Room       = require("../models/room-model.js");
 var User       = require("../models/user-model.js");
-var RoomController = require("../controllers/room-controller.js");
-// Custom middleware
-var middleware = require("../middleware/middleware.js"); 
 
-var isLoggedIn = middleware.isLoggedIn;
+var RoomController = require("../controllers/room-controller.js");
+
 
 
 // Serves index page - displays all online rooms
@@ -25,6 +23,7 @@ router.get("/rooms/room", function(req, res){
 	res.redirect("/rooms/");
 });
 
+// Enters a room.
 router.get("/rooms/room/:link", function(req, res){
 	// Display a single room
 });

@@ -2,14 +2,122 @@
 <% include ./user-style.ejs %>
 <% include ../partials/navigation.ejs %>
 
+
+
 <div class="container">
 	<div id="profile-details">
 		<ul>
-			<li>Username: Omar Mohamad</li>
-			<li>Email: omar@email.com</li>
+			<li>
+				Username: Omar Mohamad 
+				<a href="#" id="edit-username">edit</a>
+				<input type="text" id="new-username" name="username" value="" 
+						class="styled-input"  placeholder="new username" />
+			</li>
+			<li>
+				Email: omar@email.com 
+				<a href="#" id="edit-email">edit</a>
+				<input type="text" name="email" value="" id="new-email" 
+						class="styled-input" placeholder="new email"/>
+			</li>
+			<li>
+				Password: &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;
+				<a href="#" id="edit-password">edit</a>
+				<input type="password" name="password" value="" id="new-password" 
+						class="styled-input" placeholder="new password" />
+			</li>
+			<li>
+				<input type="submit" class="styled-button" id="update-profile" value="update" />
+				<input type="submit" class="styled-button" id="cancel-update" value="cancel" />
+			</li>
 		</ul>
 	</div>	
-	<p>Emails are used to receive notifications when someone visits your room, or when you forget your password.</p>
+	<p>Emails are used to receive notifications, or when you forget your password.</p>
 </div>
+
+<script type="text/javascript">
+
+$(window).onload = function(){
+
+// Form elements
+var usernameInput = $("#new-username");
+var emailInput    = $("#new-email");	
+var passwordInput = $("#new-password");
+
+// Display buttons
+var usernameButton = $("#edit-username");
+var emailButton    = $("#edit-email");
+var passwordButton = $("#edit-password");
+
+// Form buttons
+var updateButton = $("#update-profile");
+var cancelButton = $("#cancel-update");
+
+
+// Hiding inputs until user clicks to edit them.
+usernameInput.hide();
+emailInput.hide();
+passwordInput.hide();
+	
+// Hiding submit and cancel buttons, until there's data to submit.
+updateButton.hide();
+cancelButton.hide();
+
+usernameButton.on("click", function(){
+	usernameButton.hide();
+	usernameInput.show();
+	showFormButtons();
+});
+
+emailButton.on("click", function(){
+	emailButton.hide();
+	emailInput.show();
+	showFormButtons();
+});
+
+passwordButton.on("click", function(){
+	passwordButton.hide();
+	passwordInput.show();
+	showFormButtons();
+});
+
+cancelButton.on("click", function(){
+	resetForm();
+});
+
+updateButton.on("click", function(){
+	// Send update request to server.
+
+	resetForm();
+});
+
+// Resets all form components.
+function resetForm(){
+	usernameButton.show();
+	emailButton.show();
+	passwordButton.show();
+
+	usernameInput.hide();
+	emailInput.hide();
+	passwordInput.hide();
+
+	updateButton.hide();
+	cancelButton.hide();
+}
+
+// Displays a button, if it's hidden.
+function displayButton(button, display){
+	if(button.css("display") == "none"){
+		button.css("display", display);
+	}
+}
+
+// Displays the form buttons if they are hidden.
+function showFormButtons(){
+	displayButton(updateButton, "inline-block");
+	displayButton(cancelButton, "inline-block");
+}
+
+}();
+</script>
 
 <% include ../partials/footer.ejs %>

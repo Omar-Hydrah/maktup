@@ -24,6 +24,29 @@ a:hover{
 .left-box{float:left;}
 /*.container{width:900px; border:1px solid red;}*/
 
+.styled-input{
+	font-size:14px;
+	/*float:right;*/
+	margin-right:8px;
+	border:1px solid #ccc;
+	border-radius:4px;
+	padding:5px;
+}
+
+.styled-input:focus{
+	border:1px solid #555;
+}
+
+.styled-button{
+	/*background-color: #ddd;*/
+	color:#333;
+	border:1px solid #ddd;
+	border-radius:4px;
+	text-decoration:none;
+	cursor:pointer;
+	font-size:16px;
+	padding:5px;
+}
 
 /* Header file */
 #site-brand{

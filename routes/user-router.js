@@ -1,11 +1,13 @@
-var router     = require("express").Router();
-// Custom middleware (Authentication)
-var middleware = require("../middleware/middleware.js");
+var router         = require("express").Router();
 var RoomController = require("../controllers/room-controller.js");
 
 
 router.get(/^\/$|^\/home$|^\/index$/, function(req, res){
-	res.render("user/index");
+	RoomController.getOnlineRooms().then(function(rooms){
+		res.render("user/index", {rooms: rooms});
+	}).catch(function(err){
+		res.send("Error occured");
+	});
 });
 
 router.get("/profile", function(req, res){
@@ -22,7 +24,7 @@ router.get("/rooms", function(req, res){
 		res.render("user/rooms", {rooms: rooms});
 		
 	}).catch(function(err){
-
+		res.send("Error occured.");
 	});
 });
 
