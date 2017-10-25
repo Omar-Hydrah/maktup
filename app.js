@@ -2,11 +2,13 @@ var path       = require("path");
 var express    = require("express");
 var app        = express();
 var server     = require("http").Server(app);
-var io         = require("socket.io")(server);
+// var io         = require("socket.io")(server);
+var io         = require("socket.io")();
 var session    = require("express-session");
 var flash      = require("connect-flash");
 var passport   = require("passport");
 var mongoose   = require("mongoose");
+var morgan     = require("morgan");
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var sharedSession = require("express-socket.io-session");
@@ -24,17 +26,18 @@ app.use(express.static(path.resolve(__dirname, "public")));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cookieParser("happyflappycat"));
+app.use(morgan("dev"));
 
 var sessionStore = new session.MemoryStore();
 
-var sessionSetup = {
+var sessionSetup = session({
 	secret: "cathappysuper",
 	resave: true,
 	saveUninitialized: true,
 	store: sessionStore
-};
+});
 
-app.use(session(sessionSetup));
+app.use(sessionSetup);
 
 /* Login and authentication middlewares */
 app.use(passport.initialize());
@@ -56,11 +59,23 @@ var middleware = require("./middleware/middleware.js");
 
 app.use("/", homeRouter);
 // Applying a general authentication middleware, 
-// 		to avoid writing it in every single route.
+// to avoid writing it in every single route.
 app.use("/user", middleware.isLoggedIn, userRouter);
 app.use("/rooms", middleware.isLoggedIn, roomRouter);
 
 var port = process.env.PORT || 80;
+
+io.attach(server, {
+	pingInterval: 10000,
+	pingTimeout: 5000,
+	cookie: false
+});
+
+// Socket server events
+require("./config/socket-events.js")(io);
+
+// Shares the server session with the sockets server.
+io.use(sharedSession(sessionSetup));
 
 server.listen(port, function(){
 	console.log(`Maktup is running on port ${port}`);

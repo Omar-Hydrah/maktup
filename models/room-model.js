@@ -5,8 +5,10 @@ var roomSchema = mongoose.Schema({
 	owner: {type: String, required:true},
 	ownerId: {type:String},
 	title:{type:String},
+	rawLink: {type: String},
 	link: {type:String},
-	membersCount: {type: Number}
+	usersCount: {type: Number},
+	onlineUsers: [{userId: String}]
 });
 
 // Object constructor for Room model
@@ -18,7 +20,7 @@ roomSchema.statics.createRoom = function(room){
 	this.title   = room.title;
 	this.rawLink = generateLink();
 	this.link    = `/rooms/room/${this.rawLink}`;
-	this.membersCount = 0;
+	this.usersCount = 0;
 
 	return this;
 }
@@ -26,7 +28,7 @@ roomSchema.statics.createRoom = function(room){
 roomSchema.methods.generateLink = function(){
 	this.rawLink = generateLink();
 	this.link    = `/rooms/room/${this.rawLink}`;
-	this.membersCount = 0; // No online users yet.
+	this.usersCount = 0; // No online users yet.
 
 	return this;
 }

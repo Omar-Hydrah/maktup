@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="/room-style.css" />
+	<title>Maktup - <%= room.title %></title>
+</head>
+<body>
+<div id="wrapper">
+	<div id="nav-box">
+		<div id="nav-row">
+			<h2><%= room.title %></h2>
+			<div id="nav-right" class="clear-fix">
+				<h4><a href="/home">Home</a></h4>
+				<h4><a href="/logout">Logout</a></h4>
+			</div>
+		</div>
+	</div>
+	<div id="left-box">
+		<ul>
+			<li><a href="#">Omar Mohamad</a></li>
+			<li><a href="#">Mustafa Ahamd</a></li>
+			<li><a href="#">Mahmoud Kareem</a></li>
+		</ul>
+	</div>
+	<dev id="right-box">
+		
+	</dev>
+</div>
+
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/jquery.min.js"></script>
+<script type="text/javascript" src="/chat-room.js"></script>
+</body>
+</html>
+

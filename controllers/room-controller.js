@@ -46,7 +46,8 @@ Controller.getRooms = function(){
 // Retrieves rooms that have online members
 Controller.getOnlineRooms = function(){
 	return new Promise(function(resolve, reject){
-		Room.find({membersCount: {$ne: 0}}, function(err, rooms){
+		// Get all rooms were usersCount is not 0.
+		Room.find({usersCount: {$ne: 0}}, function(err, rooms){
 			if(err){reject(err);}
 			resolve(rooms);
 		});
@@ -64,6 +65,68 @@ Controller.getUserRooms = function(userId){
 			resolve(rooms);
 		});
 	});	
+}
+
+// Retrieves a list of a room's onlineUsers
+Controller.getRoomOnlineUsers = function(rawLink){
+	return new Promise((resolve, reject)=>{
+		Controller.findRoomByLink(rawLink).then((room)=>{
+
+			resolve(room.onlineUsers);
+
+		}).catch((err)=>{
+			reject(err);
+		});
+	});
+}
+
+// Activiates a single room, after a user enters it.
+// Increases the usersCount  +1, and inserts the userId in the onlineUsers[]
+Controller.enterRoom = function(userId, rawLink){
+
+	Controller.findRoomByLink(rawLink).then((room)=>{
+		// If the user is already not in this room, add the user.
+		if(room.onlineUsers.indexOf(userId) == -1){
+			room.onlineUsers.push(userId); // Add the user to the list.
+			room.usersCount++;
+			room.save((err)=>{
+				if(err){throw err;}
+			});
+		}
+	}).catch((err)=>{
+		throw err;
+	});
+}
+
+// Removes the user from the room, and sets the usersCount -1
+Controller.exitRoom = function(userId, rawLink){
+	Controller.findRoomByLink(rawLink).then((room)=>{
+		// Remove the user if he is in the room
+		if(room.onlineUsers.indexOf(userId) != -1){
+			// Remove the userId from the onlineUsers[] using splice().
+			room.onlineUsers.splice(room.onlineUsers.indexOf(userId), 1);
+
+			room.usersCount--;
+			room.save((err)=>{
+				if(err){throw err;}
+			});
+		}
+	}).catch((err)=>{
+		throw err;
+	});
+}
+
+
+// Finds a single room by its link.
+Controller.findRoomByLink = function(rawLink){
+	return new Promise(function(resolve, reject){
+
+		Room.findOne({rawLink: rawLink}, function(err, room){
+			if(err){reject(err);}
+
+			resolve(room);
+		});
+	});
 }
 
 module.exports = Controller;

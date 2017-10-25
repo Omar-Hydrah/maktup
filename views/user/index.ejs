@@ -5,12 +5,17 @@
 
 <div class="boxes" id="profile-windows">
 	<div class="left-box" >
+		<p>Online (open) rooms: </p>
 		<div id="online-chat-rooms">
-			<p>Online rooms: </p>
 			<ul>
-				<li><a href="#">Home owners</a></li>
-				<li><a href="#">New year</a></li>
-				<li><a href="#">Football fans</a></li>
+				<% for(var i = 0; i < openRooms.length; i++){ %>
+					<%
+						var title = openRooms[i].title;
+						var link  = openRooms[i].link;
+						var count = openRooms[i].usersCount;
+					%>
+					<li><a href=<%= link %>><%= title %>(<%= count %> online)</a></li>
+				<% } %>
 			</ul>
 		</div>
 
@@ -18,6 +23,7 @@
 	</div>
 
 	<div class="right-box" >
+		<p>Online friends: </p>
 		<div id="online-friends">
 			
 		</div>

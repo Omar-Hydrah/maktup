@@ -4,28 +4,35 @@ var User       = require("../models/user-model.js");
 
 var RoomController = require("../controllers/room-controller.js");
 
-
-
 // Serves index page - displays all online rooms
 router.get(/^\/$|^\/home$|^\/index$/, function(req, res){
 
 	// A promise to fetch all rooms
 	RoomController.getRooms().then(function(rooms){
 		res.render("rooms/index", {rooms: rooms});
-		
 	}).catch(function(err){
-		throw err;
+		// throw err;
+		res.send("Error occured");
 	});
 });
 
-router.get("/rooms/room", function(req, res){
+router.get("/room", function(req, res){
 	// Unaccessible - no room link was provided.
 	res.redirect("/rooms/");
 });
 
-// Enters a room.
-router.get("/rooms/room/:link", function(req, res){
-	// Display a single room
+// Enter a room.
+router.get("/room/:link", function(req, res){
+	
+	// Displays a single room
+	RoomController.findRoomByLink(req.params.link)
+	.then(function(room){
+		res.render("rooms/room", {room: room});
+
+	}).catch(function(err){
+
+		res.send("Error occured");
+	});
 });
 
 // Creates a new room
