@@ -6,7 +6,6 @@ var middleware = require("../middleware/middleware.js");
 /* Passport authentication middleware */
 // Using a successRedirect property,
 // 		prevents other middleware layers from behaving properly.
-
 var loginMiddleware = passport.authenticate("login", {
 	failureRedirect:"/",
 	// successRedirect: "/user/",
@@ -34,22 +33,21 @@ router.get("/", function(req, res){
 });
 
 router.post("/login", loginMiddleware, middleware.storeToken, function(req, res){
-	req.session.user          = {};
-	req.session.user.id       = req.user.id;
-	req.session.user.username = req.user.username;
-	req.session.user.email    = req.user.email;
-
+	createUserSession(req); // Saves a user object in the session.
 	res.redirect("/user/");
 });
 
 router.post("/register", registerMiddleware, middleware.storeToken, function(req, res){
-	req.session.user          = {}
+	createUserSession(req); // Saves a user object in the session
+	res.redirect("/user/");
+});
+
+function createUserSession(req){
+	req.session.user          = {};
 	req.session.user.id       = req.user.id;
 	req.session.user.username = req.user.username;
 	req.session.user.email    = req.user.email;
-
-	res.redirect("/user");
-});
+}
 
 router.get("/home", function(req, res){
 

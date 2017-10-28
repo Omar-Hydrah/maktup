@@ -72,7 +72,7 @@ io.attach(server, {
 });
 
 // Socket server events
-require("./config/socket-events.js")(io);
+require("./socket-events.js")(io);
 
 // Shares the server session with the sockets server.
 io.use(sharedSession(sessionSetup));

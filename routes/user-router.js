@@ -6,7 +6,8 @@ router.get(/^\/$|^\/home$|^\/index$/, function(req, res){
 
 	// Displays all online rooms.
 	RoomController.getOnlineRooms().then(function(rooms){
-		res.render("user/index", {openRooms: rooms});
+		res.render("user/index", {onlineRooms: rooms});
+		// console.log(rooms);
 	}).catch(function(err){
 		res.send("Error occured");
 	});

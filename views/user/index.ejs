@@ -8,11 +8,11 @@
 		<p>Online (open) rooms: </p>
 		<div id="online-chat-rooms">
 			<ul>
-				<% for(var i = 0; i < openRooms.length; i++){ %>
+				<% for(var i = 0; i < onlineRooms.length; i++){ %>
 					<%
-						var title = openRooms[i].title;
-						var link  = openRooms[i].link;
-						var count = openRooms[i].usersCount;
+						var title = onlineRooms[i].title;
+						var link  = onlineRooms[i].link;
+						var count = onlineRooms[i].usersCount;
 					%>
 					<li><a href=<%= link %>><%= title %>(<%= count %> online)</a></li>
 				<% } %>
