@@ -59,7 +59,7 @@ var registerStrategy = new LocalStrategy({
 		user.createUser(email, username, password);
 		user.save(function(err){
 			if(err){throw err;}
-			req.session.username = user.username;
+			// req.session.username = user.username;
 
 			return done(null, user);
 		});	

@@ -43,10 +43,10 @@ router.post("/register", registerMiddleware, middleware.storeToken, function(req
 });
 
 function createUserSession(req){
-	req.session.user          = {};
-	req.session.user.id       = req.user.id;
-	req.session.user.username = req.user.username;
-	req.session.user.email    = req.user.email;
+	req.session.user       = {};
+	req.session.user.id    = req.user.id;
+	req.session.user.name  = req.user.name;
+	req.session.user.email = req.user.email;
 }
 
 router.get("/home", function(req, res){

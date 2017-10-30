@@ -3,18 +3,17 @@
 <% include ../partials/navigation.ejs %>
 
 
-
 <div class="container">
 	<div id="profile-details">
 		<ul>
 			<li>
-				Username: Omar Mohamad 
+				Username: <%= user.name %>
 				<a href="#" id="edit-username">edit</a>
 				<input type="text" id="new-username" name="username" value="" 
 						class="styled-input"  placeholder="new username" />
 			</li>
 			<li>
-				Email: omar@email.com 
+				Email: <%= user.email %> 
 				<a href="#" id="edit-email">edit</a>
 				<input type="text" name="email" value="" id="new-email" 
 						class="styled-input" placeholder="new email"/>

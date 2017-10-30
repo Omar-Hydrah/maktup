@@ -1,16 +1,16 @@
 var mongoose = require("mongoose");
 var kasba    = require("kasba");
+var User     = require("./user-model.js");
 var ObjectId = mongoose.SchemaTypes.ObjectId;
 
 var roomSchema = mongoose.Schema({
 	owner: {type: String, required:true},
-	ownerId: {type:String},
+	ownerId: {type:ObjectId},
 	title:{type:String},
 	rawLink: {type: String},
 	link: {type:String},
 	usersCount: {type: Number},
-	onlineUsers: [{type: ObjectId}],
-	namesList: [{type:String}]
+	onlineUsers: [{id: ObjectId, name: String}]
 });
 
 // Object constructor for Room model
@@ -32,7 +32,6 @@ roomSchema.methods.generateLink = function(){
 	this.link    = `/rooms/room/${this.rawLink}`;
 	this.usersCount  = 0; // No online users yet.
 	this.onlineUsers = [];
-	this.namesList   = [];
 
 	return this;
 }

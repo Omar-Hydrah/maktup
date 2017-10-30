@@ -85,13 +85,55 @@ Controller.getRoomOnlineUsers = function(rawLink){
 	});
 }
 
-// Adds a username to room.namesList[] and userId to room.onlineUsers.
+// Finds a single room by its rawLink.
+Controller.findRoomByLink = function(rawLink){
+	return new Promise(function(resolve, reject){
+
+		Room.findOne({rawLink: rawLink}, function(err, room){
+			if(err){reject(err);}
+
+			resolve(room);
+		});
+	});
+}
+
+// Adds a user object to room.onlineUsers.
 Controller.addOnlineUser = function(userId , room){
 	UserController.findUserById(userId).then((user)=>{
-		var username = user.username;
-		
+		console.log(`${user.name} is entering ${room.title}`);
+		var userInstance = {
+			id  : user.id,
+			name: user.name
+		};
+		room.onlineUsers.push(userInstance);
+		room.usersCount++;
+		room.save((err)=>{
+			// console.log("Saved room state");
+			console.log("112");
+			console.log(room.onlineUsers);
+			if(err){throw err;}
+		});
 	}).catch((err)=>{
+		throw err;
+	});
+}
 
+
+// Removes a user object from room.onlineUsers
+Controller.removeOnlineUser = function(userId, room){
+	UserController.findUserById(userId).then((user)=>{
+		var index = locateUserIndex(room.onlineUsers, user.id);
+		if(index != -1){
+			room.onlineUsers.splice(index, 1);
+			room.usersCount--;
+			room.save((err)=>{
+				console.log("130");
+				console.log(room.onlineUsers);
+				if(err){throw err;}
+			});
+		}
+	}).catch((err)=>{
+		throw err;
 	});
 }
 
@@ -100,7 +142,6 @@ Controller.addOnlineUser = function(userId , room){
 Controller.enterRoom = function(userId, rawLink){
 	console.log(`rawLink (enterRoom) ${rawLink}`);
 	console.log(`userId (enterRoom) ${userId}`);
-	var user;
 
 	Controller.findRoomByLink(rawLink).then((room)=>{
 
@@ -110,14 +151,16 @@ Controller.enterRoom = function(userId, rawLink){
 		// If the user is already not in this room, add the user.
 		// And insert the user's name into room.namesList[]
 		if(userIndex == -1){
-			 // Add the user to the list.
-			room.onlineUsers.push(userId);
-
+			// Add the user to the list.
+			Controller.addOnlineUser(userId, room);
+			// console.log("155");
 			// console.log(room.onlineUsers);
-			room.usersCount++;
+			// room.onlineUsers.push(userId);
+
+			/*room.usersCount++;
 			room.save((err)=>{
 				if(err){throw err;}
-			});
+			});*/
 		}
 	}).catch((err)=>{
 		throw err;
@@ -129,12 +172,12 @@ Controller.exitRoom = function(userId, rawLink){
 	console.log(`rawLink (exitRoom) ${rawLink}`);
 	console.log(`userId (exitRoom) ${userId}`);
 
-
 	Controller.findRoomByLink(rawLink).then((room)=>{
-		// console.log("115");
-		// console.log(room.onlineUsers);
+		Controller.removeOnlineUser(userId, room);
+		console.log("176");
+		console.log(room.onlineUsers);
 
-		var userIndex = locateUserIndex(room.onlineUsers, userId);
+/*		var userIndex = locateUserIndex(room.onlineUsers, userId);
 		// console.log("userIndex: ", userIndex);
 		// Remove the user if he is in the room
 		if(userIndex != -1){
@@ -150,7 +193,7 @@ Controller.exitRoom = function(userId, rawLink){
 			room.save((err)=>{
 				if(err){throw err;}
 			});
-		}
+		}*/
 	}).catch((err)=>{
 		throw err;
 	});
@@ -158,17 +201,7 @@ Controller.exitRoom = function(userId, rawLink){
 
 
 
-// Finds a single room by its link.
-Controller.findRoomByLink = function(rawLink){
-	return new Promise(function(resolve, reject){
 
-		Room.findOne({rawLink: rawLink}, function(err, room){
-			if(err){reject(err);}
-
-			resolve(room);
-		});
-	});
-}
 
 // Finds a single room by its link.
 // To be swapped with findRoomByLink
@@ -187,7 +220,8 @@ Controller.getRoomByLink = function(rawLink){
 function locateUserIndex(usersList, userId){
 	var index = -1;
 	for(var i = 0; i < usersList.length; i++){
-		if(usersList[i].equals(userId)){
+		// usersList[] = {id, name}
+		if(usersList[i].id.equals(userId)){
 			index = i;
 			return index;
 		}

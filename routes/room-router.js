@@ -40,7 +40,7 @@ router.post("/new", function(req, res){
 	var user = req.session.user;
 
 	var room = {
-		owner  : user.username,
+		owner  : user.name,
 		ownerId: user.id,
 		title  : req.body.roomName
 	};

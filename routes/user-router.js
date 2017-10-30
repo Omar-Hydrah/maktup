@@ -14,7 +14,7 @@ router.get(/^\/$|^\/home$|^\/index$/, function(req, res){
 });
 
 router.get("/profile", function(req, res){
-	res.render("user/profile");
+	res.render("user/profile", {user: req.session.user});
 });
 
 router.get("/rooms", function(req, res){
