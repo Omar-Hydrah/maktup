@@ -6,6 +6,9 @@ var UserController = require("./user-controller.js");
 // mongoose.Types.ObjectId();
 // document._id.equals(stringId);
 
+// Number of promises should be reduced inside enterRoom, exitRoom
+// addOnlineUser, and removeOnlineUser.
+
 var Controller = {};
 
 
@@ -100,7 +103,7 @@ Controller.findRoomByLink = function(rawLink){
 // Adds a user object to room.onlineUsers.
 Controller.addOnlineUser = function(userId , room){
 	UserController.findUserById(userId).then((user)=>{
-		console.log(`${user.name} is entering ${room.title}`);
+
 		var userInstance = {
 			id  : user.id,
 			name: user.name
@@ -108,9 +111,6 @@ Controller.addOnlineUser = function(userId , room){
 		room.onlineUsers.push(userInstance);
 		room.usersCount++;
 		room.save((err)=>{
-			// console.log("Saved room state");
-			console.log("112");
-			console.log(room.onlineUsers);
 			if(err){throw err;}
 		});
 	}).catch((err)=>{
@@ -120,6 +120,7 @@ Controller.addOnlineUser = function(userId , room){
 
 
 // Removes a user object from room.onlineUsers
+// Slows down the application. Should be updated.
 Controller.removeOnlineUser = function(userId, room){
 	UserController.findUserById(userId).then((user)=>{
 		var index = locateUserIndex(room.onlineUsers, user.id);
@@ -127,8 +128,6 @@ Controller.removeOnlineUser = function(userId, room){
 			room.onlineUsers.splice(index, 1);
 			room.usersCount--;
 			room.save((err)=>{
-				console.log("130");
-				console.log(room.onlineUsers);
 				if(err){throw err;}
 			});
 		}
@@ -145,22 +144,13 @@ Controller.enterRoom = function(userId, rawLink){
 
 	Controller.findRoomByLink(rawLink).then((room)=>{
 
-		// Works on the array of online users.
+		// Searches the array of online users.
 		var userIndex = locateUserIndex(room.onlineUsers, userId);
-		// console.log("userIndex: ", userIndex);
+
 		// If the user is already not in this room, add the user.
-		// And insert the user's name into room.namesList[]
 		if(userIndex == -1){
 			// Add the user to the list.
 			Controller.addOnlineUser(userId, room);
-			// console.log("155");
-			// console.log(room.onlineUsers);
-			// room.onlineUsers.push(userId);
-
-			/*room.usersCount++;
-			room.save((err)=>{
-				if(err){throw err;}
-			});*/
 		}
 	}).catch((err)=>{
 		throw err;
@@ -174,26 +164,7 @@ Controller.exitRoom = function(userId, rawLink){
 
 	Controller.findRoomByLink(rawLink).then((room)=>{
 		Controller.removeOnlineUser(userId, room);
-		console.log("176");
-		console.log(room.onlineUsers);
 
-/*		var userIndex = locateUserIndex(room.onlineUsers, userId);
-		// console.log("userIndex: ", userIndex);
-		// Remove the user if he is in the room
-		if(userIndex != -1){
-			// console.log("122");
-			// console.log(room.onlineUsers);
-			// Remove the userId from the onlineUsers[] using splice().
-			var userIndex = room.onlineUsers.indexOf(userId._id);
-			room.onlineUsers.splice(userIndex, 1);
-
-			// console.log(`${userId} is leaving room`);
-
-			room.usersCount--;
-			room.save((err)=>{
-				if(err){throw err;}
-			});
-		}*/
 	}).catch((err)=>{
 		throw err;
 	});

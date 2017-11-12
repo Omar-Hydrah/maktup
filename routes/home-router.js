@@ -32,6 +32,16 @@ router.get("/", function(req, res){
 	res.render("index");
 });
 
+// Create pages for login and register
+// Temporary solution:
+router.get("/login", function(req, res){
+	res.redirect("/");
+});
+
+router.get("/register", function(req, res){
+	res.redirect("/");
+});
+
 router.post("/login", loginMiddleware, middleware.storeToken, function(req, res){
 	createUserSession(req); // Saves a user object in the session.
 	res.redirect("/user/");

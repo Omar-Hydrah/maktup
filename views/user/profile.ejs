@@ -8,19 +8,19 @@
 		<ul>
 			<li>
 				Username: <%= user.name %>
-				<a href="#" id="edit-username">edit</a>
+				<a href="#" class="reveal-input" id="edit-username">edit</a>
 				<input type="text" id="new-username" name="username" value="" 
 						class="styled-input"  placeholder="new username" />
 			</li>
 			<li>
 				Email: <%= user.email %> 
-				<a href="#" id="edit-email">edit</a>
+				<a href="#" class="reveal-input" id="edit-email">edit</a>
 				<input type="text" name="email" value="" id="new-email" 
 						class="styled-input" placeholder="new email"/>
 			</li>
 			<li>
 				Password: &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;
-				<a href="#" id="edit-password">edit</a>
+				<a href="#" class="reveal-input" id="edit-password">edit</a>
 				<input type="password" name="password" value="" id="new-password" 
 						class="styled-input" placeholder="new password" />
 			</li>
@@ -61,20 +61,26 @@ passwordInput.hide();
 updateButton.hide();
 cancelButton.hide();
 
-usernameButton.on("click", function(){
+usernameButton.on("click", function(event){
+	event.preventDefault();
 	usernameButton.hide();
+	usernameInput.val(""); // Clearing any browser value
 	usernameInput.show();
 	showFormButtons();
 });
 
-emailButton.on("click", function(){
+emailButton.on("click", function(event){
+	event.preventDefault();
 	emailButton.hide();
+	emailInput.val(""); // Clearing any browser value
 	emailInput.show();
 	showFormButtons();
 });
 
-passwordButton.on("click", function(){
+passwordButton.on("click", function(event){
+	event.preventDefault();
 	passwordButton.hide();
+	passwordInput.val(""); // Clearing any browser value
 	passwordInput.show();
 	showFormButtons();
 });
@@ -83,11 +89,61 @@ cancelButton.on("click", function(){
 	resetForm();
 });
 
-updateButton.on("click", function(){
+/*
+When the user clicks "update", a request with all inputs 
+is send to the server, regardless of whether the user 
+wants to change every value or not.
+*/
+updateButton.on("click", function(event){
+	event.preventDefault();
+	var username = usernameInput.val().trim();
+	var email    = emailInput.val().trim();
+	var password = passwordInput.val().trim();
+
+	// Sending null to server to avoid updating undesired values.
+	if(!username || username.length == 0){
+		username == null;
+	}else if(username.length < 4){
+		// Warn the user
+	}
+
+	if(!email || email.length == 0){
+		email == null;
+	}else if(email.length < 4){
+		// Warn the user
+	}
+
+	if(!password || password.length == 0){
+		password == null;
+	}else if(password.length < 4){
+		// Warn the user
+	}
+
 	// Send update request to server.
+	$.ajax({
+		method: "POST",
+		url   : "/user/update-profile",
+		data  : {
+			username: username,
+			email   : email,
+			password: password
+		},
+		xhrFields:{
+			// Makes the server authenticate the user.
+			withCredentials: true
+		},
+		success: function(response){
+			console.log(response);
+			console.log("Data sent to server.");
+		},
+		error: function(){
+			// Data failed to reach server.
+		}
+	});
 
 	resetForm();
 });
+
 
 // Resets all form components.
 function resetForm(){
