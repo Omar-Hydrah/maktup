@@ -36,6 +36,7 @@ Controller.saveRoom = function(roomObject, user, done){
 		});
 	});
 
+	// Series msitake.
 	// callback(error, roomInstance).
 	return done(null, room);
 }

@@ -7,9 +7,13 @@ var RoomSchema = Room.schema;
 
 // userSchema.rooms types, should be replaced with RoomSchema
 var userSchema = mongoose.Schema({
-	email:{type:String, required:true},
+	email:{
+		type:String, 
+		required:true, 
+		unique: true
+	},
 	name: {type: String, required:true},
-	password: {type: String},
+	password: {type: String, required: true},
 	rooms: [{roomId: ObjectId}],
 	roomsCount: {type: Number}
 });
@@ -19,6 +23,10 @@ function hashPassword(password){
 }
 
 userSchema.methods.hashPassword = function(password){
+	return hashPassword(password);
+}
+
+userSchema.statics.hashPassword = function(password){
 	return hashPassword(password);
 }
 

@@ -31,6 +31,8 @@
 		</ul>
 	</div>	
 	<p>Emails are used to receive notifications, or when you forget your password.</p>
+	<div id="errors-container"></div>
+	<p id="form-message"></p>
 </div>
 
 <script type="text/javascript">
@@ -51,6 +53,10 @@ var passwordButton = $("#edit-password");
 var updateButton = $("#update-profile");
 var cancelButton = $("#cancel-update");
 
+// Form errors or messages - font is red by default.
+var messageContainer = $("#form-message");
+// The response from the server on updating user's info.
+var errorsContainer  = $("#errors-container"); 
 
 // Hiding inputs until user clicks to edit them.
 usernameInput.hide();
@@ -100,6 +106,7 @@ updateButton.on("click", function(event){
 	var email    = emailInput.val().trim();
 	var password = passwordInput.val().trim();
 
+
 	// Sending null to server to avoid updating undesired values.
 	if(!username || username.length == 0){
 		username == null;
@@ -133,17 +140,108 @@ updateButton.on("click", function(event){
 			withCredentials: true
 		},
 		success: function(response){
+
+			// Unexpected large response
+			// All three form errors are 111 in length. 
+			if(response.length > 120){
+				return;
+			}
+
+			// Server sends either an array of errors, or a message object.
 			console.log(response);
 			console.log("Data sent to server.");
+
+			// Handles the response whether it's a success or a failure.
+			handleFormResponse(errorsContainer, response);
+
+			/*switch(response){
+				// Success - use info updated.
+				case response.message:
+					// declareSuccess(messageContainer);
+					break;
+
+				// Errors list received
+				default:
+					handleFormResponse(messageContainer, response);
+					break;
+			}*/
 		},
 		error: function(){
 			// Data failed to reach server.
+			// warnUser(messageContainer, "Failed to update. Try again later");
 		}
 	});
 
+	// Clearing input values, to allow for a new change/update.
+	clearInputValues(usernameInput, emailInput, passwordInput);
 	resetForm();
 });
 
+
+// Handle form response from server (display errors, or success message).
+function handleFormResponse(errorsContainer, formResponse){
+
+	var resposne;
+	try{
+		response = JSON.parse(formResponse);
+	}catch(error){
+		console.log("Error occured in JSON parsing.");
+		console.log(error);
+		return;
+	}
+
+	if(response.errors && response.errors.length > 0 ){
+
+		// Errors array exists.
+		for(var i = 0; i < response.errors.length; i++){
+			// Displaying form errors for the user.
+			echoMessage(errorsContainer, response.errors[i], "red");
+			console.log(response.errors[i]);
+		}
+		
+	// Success - user info updated.
+	}else if(response.message && response.message.length > 0){
+		echoMessage(errorsContainer, response.message, "green");
+		console.log(response.message);
+	}
+
+}
+
+/*// Handle errors returned by the server (json).
+function getFormErrors(response){
+	// Errors are sent as json.
+	var errors;
+	
+	try{
+		errors = JSON.parse(response.errors);
+	}catch(error){
+		// Ignore error - non-json response passed. 
+		console.log("error occurred", error);
+	}
+	return errors;
+}*/
+
+
+// Warn the user about invalid values.
+/*function warnUser(messageContainer, message){
+
+	messageContainer.html(message);
+	messageContainer.show();
+}*/
+
+// Declare info updated successfuly.
+/*function declareSuccess(messageContainer){
+	messageContainer.css("color", "green");
+	warnUser(messageContainer, "User info updated.");
+	// Resetting the color after displaying it, for any new errors.
+	messageContainer.css("color", "red"); 
+}
+*/
+
+// Echo a message to the user - under errors-container.
+function echoMessage(container, message, color){
+	container.append('<p style="color:'+ color +';">'+ message +'</p>');	
+}
 
 // Resets all form components.
 function resetForm(){
@@ -157,6 +255,8 @@ function resetForm(){
 
 	updateButton.hide();
 	cancelButton.hide();
+
+	errorsContainer.children().remove();
 }
 
 // Displays a button, if it's hidden.
@@ -170,6 +270,12 @@ function displayButton(button, display){
 function showFormButtons(){
 	displayButton(updateButton, "inline-block");
 	displayButton(cancelButton, "inline-block");
+}
+
+function clearInputValues(usernameInput, emailInput, passwordInput){
+	usernameInput.val("");
+	emailInput.val("");
+	passwordInput.val("");
 }
 
 }();

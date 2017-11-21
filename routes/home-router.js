@@ -1,6 +1,7 @@
 var router     = require("express").Router();
 var passport   = require("passport");
 var middleware = require("../middleware/middleware.js");
+var UserController = require("../controllers/user-controller.js");
 
 
 /* Passport authentication middleware */
@@ -53,10 +54,11 @@ router.post("/register", registerMiddleware, middleware.storeToken, function(req
 });
 
 function createUserSession(req){
-	req.session.user       = {};
+	/*req.session.user       = {};
 	req.session.user.id    = req.user.id;
 	req.session.user.name  = req.user.name;
-	req.session.user.email = req.user.email;
+	req.session.user.email = req.user.email;*/
+	UserController.storeInSession(req, req.user);
 }
 
 router.get("/home", function(req, res){

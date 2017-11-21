@@ -1,0 +1,10 @@
+19-11-2017: Email or password are sent with the edit request
+to /user/update-profile, even if the user doesn't click to show
+the input fields. Probably because of browser saved values.
+A clear() function is used in views/user/profile.ejs, to remove
+any browser stored data. It's not working.
+
+-> To be fixed by changing the name of html input names.
+-- Done
+
+ 

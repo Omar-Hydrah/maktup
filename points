@@ -1,0 +1,10 @@
+// Points to be achieved in the project (to do)
+- Fix the request that gets sent from profile.ejs 
+-> to be fixed by changing html input names.
+
+- Make the website responsive.
+- Send errors to profile.ejs as json array. (done 12/11/2017)
+- Create the sub-domains for the socket - based on the page's url.  
+- Protect against xss in room.ejs
+- Create proper namespaces
+- Change displayed profile info, right after a successful ajax request.

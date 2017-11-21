@@ -86,3 +86,13 @@
 #cancel-update-button{
 	margin-left:5px;
 }
+
+.form-error{
+	/*display:none;*/
+	color:red;
+}
+
+#form-message{
+	display:none;
+	color:red;
+}
