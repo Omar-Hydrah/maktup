@@ -82,7 +82,8 @@ io.use(sharedSession(sessionSetup));
 
 // Socket server events
 // sharedSession must be applied to all of the namespaces.
-require("./socket-events.js")(io, sharedSession, sessionSetup);
+// require("./socket-events.js")(io, sharedSession, sessionSetup);
+require("./socket-events.js")(io);
 
 server.listen(port, function(){
 	console.log(`Maktup is running on port ${port}`);

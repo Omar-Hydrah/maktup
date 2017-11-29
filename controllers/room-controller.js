@@ -79,7 +79,7 @@ Controller.getUserRooms = function(userId){
 Controller.getRoomOnlineUsers = function(rawLink){
 	return new Promise((resolve, reject)=>{
 		Controller.findRoomByLink(rawLink).then((room)=>{
-
+			console.log("Getting online users from " + rawLink);
 			resolve(room.onlineUsers);
 
 		}).catch((err)=>{
@@ -102,19 +102,25 @@ Controller.findRoomByLink = function(rawLink){
 
 // Adds a user object to room.onlineUsers.
 Controller.addOnlineUser = function(userId , room){
-	UserController.findUserById(userId).then((user)=>{
+	return new Promise((resolve, reject)=>{
+		UserController.findUserById(userId).then((user)=>{
+			console.log("room-controller 107", room.rawLink);
+			console.log(user.name);
 
-		var userInstance = {
-			id  : user.id,
-			name: user.name
-		};
-		room.onlineUsers.push(userInstance);
-		room.usersCount++;
-		room.save((err)=>{
-			if(err){throw err;}
+			var userInstance = {
+				id  : user.id,
+				name: user.name
+			};
+			room.onlineUsers.push(userInstance);
+			room.usersCount++;
+			room.save((err)=>{
+				if(err){reject(err);}
+				console.log(`added ${userInstance.name} to ${room.rawLink}`);
+				resolve(true);
+			});
+		}).catch((err)=>{
+			reject(err);
 		});
-	}).catch((err)=>{
-		throw err;
 	});
 }
 
@@ -146,22 +152,36 @@ Controller.removeOnlineUser = function(userId, room){
 
 // Activiates a single room, after a user enters it.
 // Increases the usersCount  +1, and inserts the userId in the onlineUsers[]
+// Instead of searching the database, a username and a user-id can be sent,
+// however; this ensures that any room's onlineUsers are members in the database.
 Controller.enterRoom = function(userId, rawLink){
 	console.log(`rawLink (enterRoom) ${rawLink}`);
 	console.log(`userId (enterRoom) ${userId}`);
 
-	Controller.findRoomByLink(rawLink).then((room)=>{
+	return new Promise((resolve, reject)=>{
+		Controller.findRoomByLink(rawLink).then((room)=>{
+			if(!room){
+				reject("No room found");
+			}
+			// Searches the array of online users.
+			var userIndex = locateUserIndex(room.onlineUsers, userId);
 
-		// Searches the array of online users.
-		var userIndex = locateUserIndex(room.onlineUsers, userId);
-
-		// If the user is already not in this room, add the user.
-		if(userIndex == -1){
-			// Add the user to the list.
-			Controller.addOnlineUser(userId, room); // asynchronous
-		}
-	}).catch((err)=>{
-		throw err;
+			// If the user is already not in this room, add the user.
+			if(userIndex == -1){
+				// Add the user to the list (asynchronous).
+				Controller.addOnlineUser(userId, room)
+				.then((success)=>{
+					console.log("room-controller 173");
+					resolve(true);
+				}).catch((err)=>{
+					console.log("room-controller 176 - faild");
+					reject(err);
+				});
+			}
+		}).catch((err)=>{
+			reject(err);
+		});
+		
 	});
 }
 
@@ -173,7 +193,9 @@ Controller.exitRoom = function(userId, rawLink){
 
 	return new Promise((resolve, reject)=>{
 		Controller.findRoomByLink(rawLink).then((room)=>{
-
+			if(!room){
+				reject("No room found");
+			}
 			Controller.removeOnlineUser(userId, room)
 			.then((success)=>{
 				if(success){

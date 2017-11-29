@@ -6,8 +6,9 @@
 - Send errors to profile.ejs as json array. (done 12/11/2017)
 - Create the sub-domains for the socket - based on the page's url.  
 - Protect against xss in room.ejs
-- Create proper namespaces
 - Change displayed profile info, right after a successful ajax request.
 - Prevent login page form appearing to logged in users.
+- Create proper namespaces. (done 29/11/2017) 
 - Change the structure of accepting socket connections 
-	(in regard of using namespaces)
+	(in regard of using namespaces). (done 29/11/2017)
+- Rewrite RoomController to reduce the number of database calls.
