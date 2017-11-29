@@ -8,3 +8,6 @@
 - Protect against xss in room.ejs
 - Create proper namespaces
 - Change displayed profile info, right after a successful ajax request.
+- Prevent login page form appearing to logged in users.
+- Change the structure of accepting socket connections 
+	(in regard of using namespaces)

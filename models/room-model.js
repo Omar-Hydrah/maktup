@@ -3,6 +3,7 @@ var kasba    = require("kasba");
 var User     = require("./user-model.js");
 var ObjectId = mongoose.SchemaTypes.ObjectId;
 
+
 var roomSchema = mongoose.Schema({
 	owner: {type: String, required:true},
 	ownerId: {type:ObjectId},

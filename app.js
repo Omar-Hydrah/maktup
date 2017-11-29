@@ -53,6 +53,7 @@ var homeRouter = require("./routes/home-router.js");
 var userRouter = require("./routes/user-router.js");
 var roomRouter = require("./routes/room-router.js");
 
+
 /* Custom middleware */
 var middleware = require("./middleware/middleware.js");
 
@@ -63,6 +64,11 @@ app.use("/", homeRouter);
 app.use("/user", middleware.isLoggedIn, userRouter);
 app.use("/rooms", middleware.isLoggedIn, roomRouter);
 
+// The remaining routes don't exist. 
+app.get("*", function(req, res){
+	res.render("error");
+});
+
 var port = process.env.PORT || 80;
 
 io.attach(server, {
@@ -71,11 +77,12 @@ io.attach(server, {
 	cookie: false
 });
 
-// Socket server events
-require("./socket-events.js")(io);
-
 // Shares the server session with the sockets server.
 io.use(sharedSession(sessionSetup));
+
+// Socket server events
+// sharedSession must be applied to all of the namespaces.
+require("./socket-events.js")(io, sharedSession, sessionSetup);
 
 server.listen(port, function(){
 	console.log(`Maktup is running on port ${port}`);

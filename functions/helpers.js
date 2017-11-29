@@ -17,4 +17,53 @@ Helpers.jsonRespond = function(response){
 	return JSON.stringify(response);
 }
 
+Helpers.validateUsername = function(username){
+	if(username != null && username.length < 4){
+		return false;
+
+	// User didn't want to change this value
+	}else if(username == null){
+		return true;
+	}else{
+		return false; // Invalid.
+	}
+}
+
+Helpers.validateEmail    = function(email){
+
+	if(email != null && email.length > 0 && Helpers.isValidEmail(email)){
+		return true;
+	// User didn't want to change this value
+	}else if(email == null){
+		return true;
+	}else{
+		return false; // Invalid
+	}
+}
+
+Helpers.validatePassword = function(password){
+	if(password != null && password.length < 4){
+		return false;
+
+	// User didn't want to change this value
+	}else if(password == null){
+		return true;
+	}
+}
+
+Helpers.validateForm = function(username, email, password){
+	var errors = [];
+	if(!Helpers.validateUsername(username)){
+		errors.push("Username must be more than 4 characters");
+	}
+	if(!Helpers.validateEmail(email)){
+		errors.push("Invalid email");
+	}
+	if(!Helpers.validatePassword(password)){
+		errors.push("Password must be at least 4 characters");
+	}
+
+	return errors;
+}
+
 module.exports = Helpers;

@@ -7,4 +7,5 @@ any browser stored data. It's not working.
 -> To be fixed by changing the name of html input names.
 -- Done
 
- 
+28-11-2017: Strange structure in room.onlineUsers.
+A second id is included in addition to the user's id.

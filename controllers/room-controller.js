@@ -26,11 +26,10 @@ Controller.saveRoom = function(roomObject, user, done){
 
 	room.save(function(err){
 		if(err){throw err;} // Error
-
 		User.findById(user.id, function(err, userInstance){
 			if(err){throw err;} // Error
 			userInstance.rooms.push(room.id);
-			userInstance.save(function(err){
+			userInstance.save(function(err, user){
 				if(err){throw err;} // Error
 			});
 		});
@@ -123,17 +122,25 @@ Controller.addOnlineUser = function(userId , room){
 // Removes a user object from room.onlineUsers
 // Slows down the application. Should be updated.
 Controller.removeOnlineUser = function(userId, room){
-	UserController.findUserById(userId).then((user)=>{
-		var index = locateUserIndex(room.onlineUsers, user.id);
-		if(index != -1){
-			room.onlineUsers.splice(index, 1);
-			room.usersCount--;
-			room.save((err)=>{
-				if(err){throw err;}
-			});
-		}
-	}).catch((err)=>{
-		throw err;
+	return new Promise((resolve, reject)=>{
+		UserController.findUserById(userId).then((user)=>{
+			var index = locateUserIndex(room.onlineUsers, user.id);
+			if(index != -1){
+				room.onlineUsers.splice(index, 1);
+				room.usersCount--;
+				room.save((err)=>{
+					if(err){
+						// throw err;
+						reject(err);
+					}
+					resolve(true);
+				});
+			}
+		}).catch((err)=>{
+			// throw err;
+			reject(err);
+		});
+
 	});
 }
 
@@ -151,23 +158,37 @@ Controller.enterRoom = function(userId, rawLink){
 		// If the user is already not in this room, add the user.
 		if(userIndex == -1){
 			// Add the user to the list.
-			Controller.addOnlineUser(userId, room);
+			Controller.addOnlineUser(userId, room); // asynchronous
 		}
 	}).catch((err)=>{
 		throw err;
 	});
 }
 
+// Converted it to a promise, for some functionality in socket-evnets.js
 // Removes the user from the room, and sets the usersCount -1
 Controller.exitRoom = function(userId, rawLink){
 	console.log(`rawLink (exitRoom) ${rawLink}`);
 	console.log(`userId (exitRoom) ${userId}`);
 
-	Controller.findRoomByLink(rawLink).then((room)=>{
-		Controller.removeOnlineUser(userId, room);
+	return new Promise((resolve, reject)=>{
+		Controller.findRoomByLink(rawLink).then((room)=>{
 
-	}).catch((err)=>{
-		throw err;
+			Controller.removeOnlineUser(userId, room)
+			.then((success)=>{
+				if(success){
+					resolve(true);
+				}else{
+					reject(false);
+				}
+			}).catch((err)=>{
+				reject(err);
+			});
+
+		}).catch((err)=>{
+			throw err;
+		});
+		
 	});
 }
 

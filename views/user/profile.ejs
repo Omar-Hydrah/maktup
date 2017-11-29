@@ -144,6 +144,10 @@ updateButton.on("click", function(event){
 			// Unexpected large response
 			// All three form errors are 111 in length. 
 			if(response.length > 120){
+				echoMessage(errorsContainer, 
+					"Failed to reach server. Reload and try again", 
+					"red"
+				);
 				return;
 			}
 
@@ -169,6 +173,11 @@ updateButton.on("click", function(event){
 		error: function(){
 			// Data failed to reach server.
 			// warnUser(messageContainer, "Failed to update. Try again later");
+			console.log("Failed to send ajax request");
+			echoMessage(errorsContainer, 
+				"Failed to reach server. Please reload and try again", 
+				"red"
+			);
 		}
 	});
 
