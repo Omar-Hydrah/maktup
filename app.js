@@ -14,9 +14,7 @@ var cookieParser = require("cookie-parser");
 var sharedSession = require("express-socket.io-session");
 
 try{
-	// Remote host
-	mongoose.connect("mongodb://maktup_main:123456@ds121575.mlab.com:21575/maktup");
-	// mongoose.connect("mongodb://localhost:27017/maktup");
+	mongoose.connect("mongodb://localhost:27017/maktup");
 }catch(err){
 	throw err;
 }
