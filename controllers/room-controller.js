@@ -143,6 +143,11 @@ Controller.removeOnlineUser = function(user, room){
 			// console.log("room instance: ", roomInstance);
 			var index = locateUserIndex(roomInstance.onlineUsers, user.id);
 			if(index != -1){
+				// No user is in the room.
+				// Causes the users count to appear as -1 when using mlab mongodb
+				if(roomInstance.usersCount <= 0){
+					return;
+				}
 				roomInstance.onlineUsers.splice(index, 1);
 				roomInstance.usersCount--;
 				// console.log("removing from room ", roomInstance);
