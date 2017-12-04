@@ -66,4 +66,10 @@ Helpers.validateForm = function(username, email, password){
 	return errors;
 }
 
+// Removes any html tags from the passed string
+Helpers.stripTags = function(string){
+	// (.*)<(.*)>(.*)<\/\2>(.*)
+	return string.replace(/(.*)<.*>(.*)<\/.*>(.*)/, "$1$2$3");
+}
+
 module.exports = Helpers;

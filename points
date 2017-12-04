@@ -11,4 +11,6 @@
 - Create proper namespaces. (done 29/11/2017) 
 - Change the structure of accepting socket connections 
 	(in regard of using namespaces). (done 29/11/2017)
-- Rewrite RoomController to reduce the number of database calls.
+- Rewrite RoomController to reduce the number of database calls. 
+	(done 30/11/2017 01:00)
+- Create a logger model and log errors to database.

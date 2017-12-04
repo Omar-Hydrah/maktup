@@ -7,6 +7,7 @@
 </head>
 <body>
 <div id="wrapper">
+	<audio src="/beep.mp3" type="audio/mpeg" id="beep-sound"></audio>
 	<div id="nav-box">
 		<div id="nav-row">
 			<h2><%= room.title %></h2>
@@ -17,14 +18,18 @@
 		</div>
 	</div>
 	<div id="left-box">
-		<ul>
-			<li><a href="#">Omar Mohamad</a></li>
+		<ul id="users-container">
+			<!-- <li><a href="#">Omar Mohamad</a></li>
 			<li><a href="#">Mustafa Ahamd</a></li>
-			<li><a href="#">Mahmoud Kareem</a></li>
+			<li><a href="#">Mahmoud Kareem</a></li> -->
 		</ul>
 	</div>
 	<dev id="right-box">
-		
+		<div id="messages-container">
+			<!-- <p><a href="#">Omar Mohamad</a>: Merhaba Alem</p> -->
+		</div>
+		<textarea id="textarea"></textarea>
+		<button id="submit-button">Send</button>
 	</dev>
 </div>
 
